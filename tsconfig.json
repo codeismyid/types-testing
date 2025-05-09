@@ -1,0 +1,61 @@
+{
+  "compilerOptions": {
+    // Emit
+    "noEmit": true,
+
+    // Enable latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Aliases
+    "paths": {
+      "src": ["./src"],
+      "src/*": ["./src/*"],
+      "lib": ["./lib"],
+      "lib/*": ["./lib/*"],
+      "tsconfig.json": ["./tsconfig.json"],
+      "package.json": ["./package.json"]
+    },
+
+    // Others
+    "noEmitOnError": true,
+    "noErrorTruncation": true,
+    "newLine": "lf"
+  },
+  "include": ["**/*.ts"],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "__tests__/__integrations",
+    "__tests__/__example"
+  ],
+  "ts-node": {
+    "esm": true,
+    "preferTsExts": true,
+    "compilerOptions": {
+      "verbatimModuleSyntax": false,
+      "moduleResolution": "node"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "outDir": "."
+  },
+  "files": ["jest.test.ts", "test-case.ts"],
+  "include": ["../../src"]
+}

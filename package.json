@@ -1,0 +1,124 @@
+{
+  "name": "types-testing",
+  "version": "0.0.0",
+  "description": "Test TypeScript types at test runner runtime - Works seamlessly with Jest, Vitest, and Bun.",
+  "author": "codeismyid",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeismyid/types-testing.git"
+  },
+  "homepage": "https://github.com/codeismyid/types-testing#readme",
+  "bugs": {
+    "url": "https://github.com/codeismyid/types-testing/issues"
+  },
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "keywords": [
+    "typescript",
+    "type-definitions",
+    "types",
+    "test",
+    "unit-test",
+    "types-testing",
+    "type-testing",
+    "bun",
+    "jest",
+    "ts-jest",
+    "vitest",
+    "tsd",
+    "expectType",
+    "toBe",
+    "toBeAny",
+    "toBeNever",
+    "toBeUnknown",
+    "toExtends",
+    "toAssignable"
+  ],
+  "scripts": {
+    "prepare": "bunx husky || true",
+    "ci": "bun install --frozen-lockfile",
+    "clean": "bun clean:deps && bun clean:docs && bun clean:dist && bun clean:codecov",
+    "clean:deps": "rm -rf node_modules && rm -f bun.lockb && rm -f bun.lock",
+    "clean:dist": "rm -rf dist",
+    "check": "bun check:type && bun check:spec && bun check:format && bun check:lint",
+    "check:format": "bunx biome check --linter-enabled=false",
+    "check:lint": "bunx biome lint",
+    "check:spec": "bun test --coverage",
+    "check:type": "bunx tsc && bunx type-coverage",
+    "dist": "bun clean:dist && bun ./scripts/dist.ts && bunx publint",
+    "fix": "bun fix:format && bun fix:lint",
+    "fix:format": "bunx biome check --linter-enabled=false --fix",
+    "fix:lint": "bunx biome lint --fix",
+    "jest:run-example": "cross-env FAIL_EXAMPLE_TEST=true node --experimental-vm-modules node_modules/jest/bin/jest.js example.test.ts -c=__tests__/__example/jest.config.ts",
+    "jest:run-integrations": "node --experimental-vm-modules node_modules/jest/bin/jest.js jest.test.ts -c=__tests__/__integrations/jest.config.ts",
+    "reinstall": "bun clean:deps && bun install",
+    "release": "bun ./scripts/release.ts",
+    "test:example:bun": "cross-env FAIL_EXAMPLE_TEST=true bun test example.test.ts",
+    "test:example:jest": "cross-env FAIL_EXAMPLE_TEST=true node --experimental-vm-modules node_modules/jest/bin/jest.js example.test.ts -c=__tests__/__example/jest.config.ts",
+    "test:example:vitest": "cross-env FAIL_EXAMPLE_TEST=true bunx vitest run example.test.ts",
+    "test:integrations:bun": "bun test bun.test.ts",
+    "test:integrations:jest": "node --experimental-vm-modules node_modules/jest/bin/jest.js jest.test.ts -c=__tests__/__integrations/jest.config.ts",
+    "test:integrations:vitest": "bunx vitest run vitest.test.ts"
+  },
+  "dependencies": {
+    "ansis": "3.17.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@commitlint/cli": "19.8.0",
+    "@commitlint/types": "19.8.0",
+    "@jest/globals": "29.7.0",
+    "@types/bun": "1.2.10",
+    "@types/jest": "29.5.14",
+    "commitlint-format": "1.0.2",
+    "conventional-changelog-conventionalcommits": "8.0.0",
+    "cross-env": "7.0.3",
+    "esbuild": "0.25.4",
+    "husky": "9.1.7",
+    "jest": "29.7.0",
+    "publint": "0.3.12",
+    "semantic-release": "24.2.3",
+    "ts-jest": "29.3.2",
+    "ts-node": "10.9.2",
+    "tsc-alias": "1.8.15",
+    "tsc-output-format": "1.1.1",
+    "type-coverage": "2.29.7",
+    "typescript": "5.8.3",
+    "vitest": "3.1.2"
+  },
+  "peerDependencies": {
+    "typescript": "5.x"
+  },
+  "type": "module",
+  "module": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "bun",
+      "onFail": "warn"
+    },
+    "packageManager": {
+      "name": "bun",
+      "onFail": "warn"
+    }
+  },
+  "typeCoverage": {
+    "atLeast": 100,
+    "showRelativePath": true,
+    "strict": true,
+    "ignoreAsAssertion": true,
+    "ignoreEmptyType": true
+  },
+  "trustedDependencies": ["@biomejs/biome", "esbuild"]
+}

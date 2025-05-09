@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "verbatimModuleSyntax": false,
+    "esModuleInterop": true
+  },
+  "files": ["bun.test.ts", "jest.test.ts", "vitest.test.ts", "test-case.ts"],
+  "include": ["../../src"],
+  "exclude": ["**/*"]
+}
