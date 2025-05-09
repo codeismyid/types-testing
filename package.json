@@ -65,7 +65,7 @@
     "test:integrations:vitest": "bunx vitest run vitest.test.ts"
   },
   "dependencies": {
-    "ansis": "3.17.0"
+    "ansis": "4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
