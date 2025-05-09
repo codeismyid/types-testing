@@ -69,8 +69,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@commitlint/cli": "19.8.0",
-    "@commitlint/types": "19.8.0",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/types": "19.8.1",
     "@jest/globals": "29.7.0",
     "@types/bun": "1.2.10",
     "@types/jest": "29.5.14",
