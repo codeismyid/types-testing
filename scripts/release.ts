@@ -169,53 +169,59 @@ const releaseOptions: SemanticRelease.Options = (() => {
   return {
     branches: RELEASE_BRANCHES,
     repositoryUrl: packageJson.repository.url,
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: intended
     tagFormat: 'v${version}',
     plugins
   };
 })();
 
-const generateGhaSummary = (nextRelease: SemanticRelease.NextRelease) => {
-  const content = `## 🚀 Release Report
+const generateSummary = (result: SemanticRelease.Result) => {
+  let content = '## 🚀 Release Report';
+
+  if (result) {
+    const { nextRelease } = result;
+    const repoUrl = (releaseOptions.repositoryUrl as string)
+      .replace(/^git\+/, '')
+      .replace(/.git$/, '');
+
+    content += `
 - Type: ${nextRelease.type}
 - Version: ${nextRelease.version}
 - Tag: ${nextRelease.gitTag}
 
-See this release at this [link](${releaseOptions.repositoryUrl}/releases/tag/${nextRelease.gitTag}).
+See this release at this [link](${repoUrl}/releases/tag/${nextRelease.gitTag}).
 
 ## 📝 Generated Notes
 ${nextRelease.notes}`;
+  } else {
+    content += `
+- Type: N/A
+- Version: N/A
+- Tag: N/A
+
+No release published.`;
+  }
 
   return content;
 };
 
 const runRelease = async () => {
   try {
-    const releasing = SemanticRelease.default;
-    const result = await releasing(releaseOptions);
+    const release = SemanticRelease.default;
+    const result = await release(releaseOptions);
 
     console.info('--------------------------------------------------\n');
 
-    if (!result) {
-      console.info('No release published.');
-      return;
-    }
+    const summary = generateSummary(result);
 
-    const { nextRelease } = result;
+    console.info(summary);
 
     if (isGHA) {
-      const summary = generateGhaSummary(nextRelease);
-
-      console.info('Generating github step summary...');
       await Bun.$`printf "%s" "${summary}" >> $GITHUB_STEP_SUMMARY`;
-      console.info('> $GITHUB_STEP_SUMMARY');
-      console.info();
-      console.info('--------------------------------------------------\n');
     }
 
-    console.info(`${ansis.bold('Release Report')}\n`);
-    console.info(`Type: ${nextRelease.type}`);
-    console.info(`Version: ${nextRelease.version}`);
-    console.info(`Tag: ${nextRelease.gitTag}`);
+    console.info();
+    console.info('--------------------------------------------------\n');
   } catch (err) {
     if (err instanceof Error) {
       console.error(`${err.name}:`, `${ansis.white(err.message)}`);
