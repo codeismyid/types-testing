@@ -1,11 +1,13 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "module": "ESNext",
     "target": "ESNext",
     "isolatedModules": true,
     "esModuleInterop": true,
-    "outDir": "."
+    "outDir": ".",
+    "rootDir": "../../"
   },
   "files": ["example.test.ts"],
   "include": ["../../src"]

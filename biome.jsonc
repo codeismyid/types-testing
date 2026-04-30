@@ -3,9 +3,6 @@
   "files": {
     "ignoreUnknown": true
   },
-  "organizeImports": {
-    "enabled": true
-  },
   "formatter": {
     "enabled": true,
     "attributePosition": "multiline",
@@ -18,7 +15,11 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["__example", "__integrations"],
+    "includes": [
+      "**",
+      "!!__tests__/__example/**",
+      "!!__tests__/__integrations/**"
+    ],
     "rules": {
       "recommended": true
     }

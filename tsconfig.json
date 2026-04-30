@@ -35,8 +35,13 @@
       "lib": ["./lib"],
       "lib/*": ["./lib/*"],
       "tsconfig.json": ["./tsconfig.json"],
-      "package.json": ["./package.json"]
+      "package.json": ["./package.json"],
+      "dist": ["./dist"],
+      "dist/*": ["./dist/*"]
     },
+
+    // TypeScript V6
+    "types": ["bun", "jest"],
 
     // Others
     "noEmitOnError": true,

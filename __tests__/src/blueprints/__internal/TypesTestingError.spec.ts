@@ -11,24 +11,24 @@ import {
 import * as Ansis from 'ansis';
 import type { Compiler } from 'lib';
 import {
-  type AfterErrorFound,
+  type OnErrorFound,
   TypesTestingError
 } from 'src/blueprints/__internal/TypesTestingError';
 
 describe('TypesTestingError', () => {
-  let afterErrorFound: AfterErrorFound;
+  let onErrorFound: OnErrorFound;
   let errorMessage: string;
   let errors: Compiler.CompileResult['errors'];
 
   beforeEach(() => {
-    afterErrorFound = jest.fn();
+    onErrorFound = jest.fn();
     errorMessage = 'message';
     errors = new Map<string, Compiler.CompileResultError>();
   });
 
   describe('instantiation', () => {
     it('should be instance of Error', () => {
-      const error = new TypesTestingError(errors, afterErrorFound);
+      const error = new TypesTestingError(errors, onErrorFound);
       expect(error).toBeInstanceOf(Error);
     });
 
@@ -36,11 +36,11 @@ describe('TypesTestingError', () => {
       let error: TypesTestingError;
 
       beforeEach(() => {
-        error = new TypesTestingError(errors, afterErrorFound);
+        error = new TypesTestingError(errors, onErrorFound);
       });
 
-      it('should not call afterErrorFound fn', () => {
-        expect(afterErrorFound).toHaveBeenCalledTimes(0);
+      it('should not call onErrorFound fn', () => {
+        expect(onErrorFound).toHaveBeenCalledTimes(0);
       });
 
       it('should return empty name', () => {
@@ -89,7 +89,7 @@ describe('TypesTestingError', () => {
           } as Compiler.CompileResultError;
         });
 
-        error = new TypesTestingError(errors, afterErrorFound);
+        error = new TypesTestingError(errors, onErrorFound);
       });
 
       afterEach(() => {
@@ -100,8 +100,8 @@ describe('TypesTestingError', () => {
         });
       });
 
-      it('should call afterErrorFound fn', () => {
-        expect(afterErrorFound).toHaveBeenCalledTimes(1);
+      it('should call onErrorFound fn', () => {
+        expect(onErrorFound).toHaveBeenCalledTimes(1);
       });
 
       it('should return TypesTestingError name', () => {

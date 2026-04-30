@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from 'bun:test';
 import {
-  assertionWithTypeArgument,
-  assertionWithoutTypeArgument
+  assertionWithoutTypeArgument,
+  assertionWithTypeArgument
 } from 'lib/factories/assertion';
 
 describe('lib > factories > assertion', () => {
