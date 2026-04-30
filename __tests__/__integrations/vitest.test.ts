@@ -1,6 +1,23 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { testCase } from './test-case';
 
+vi.mock('ansis', async (importOriginal) => {
+  if (process.versions.bun) {
+    return {};
+  }
+
+  const originalAnsis = await importOriginal<typeof import('ansis')>();
+  return {
+    ...originalAnsis,
+    default: {
+      ...originalAnsis.default,
+      green: vi.fn((str: string) => str),
+      red: vi.fn((str: string) => str),
+      reset: vi.fn((str: string) => str)
+    }
+  };
+});
+
 if (process.versions.bun) {
   let bunTest = (await import('bun:test')).default;
 
@@ -24,7 +41,7 @@ if (process.versions.bun) {
         meta: Record<string, unknown>;
       }[];
     }[];
-  } = await Bun.$`bunx vitest run vitest.test.ts --reporter=json`
+  } = await Bun.$`bun test:integrations:vitest --reporter json`
     .nothrow()
     .json();
 
@@ -46,24 +63,11 @@ if (process.versions.bun) {
     }
   });
 } else {
-  vi.mock('ansis', async (importOriginal) => {
-    const originalAnsis = await importOriginal<typeof import('ansis')>();
-    return {
-      ...originalAnsis,
-      default: {
-        ...originalAnsis.default,
-        green: vi.fn((str: string) => str),
-        red: vi.fn((str: string) => str),
-        reset: vi.fn((str: string) => str)
-      }
-    };
-  });
-
   describe('typesTesting', () => {
     afterEach(() => {
       vi.clearAllMocks();
     });
 
-    testCase(describe, test, expect);
+    testCase(describe, test, expect as any);
   });
 }

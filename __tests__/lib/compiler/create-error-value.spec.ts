@@ -11,7 +11,7 @@ import { createErrorValue } from 'lib/compiler/create-error-value';
 import ts from 'typescript';
 
 describe('lib > compiler > create-error-value', () => {
-  let resolvePath: JestMock.Spied<typeof ts.sys.resolvePath>;
+  let resolvePath: jest.Spied<typeof ts.sys.resolvePath>;
   let sourceFile: ts.SourceFile;
   let caller: ts.Node;
 

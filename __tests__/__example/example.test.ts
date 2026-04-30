@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { TypesTesting } from 'src';
 import exampleModule from './example-module';
-import * as ExampleTypes from './example-types';
+import type * as ExampleTypes from './example-types';
 
 if (process.versions.bun) {
   let bunTest = (await import('bun:test')).default;
@@ -38,16 +38,12 @@ describe('example-module', () => {
   test(`exampleModule.getName type is function without parameter and return 'example-module'`, () => {
     // using runtime argument
     expectType(exampleModule.getName).toBe<() => 'example-module'>();
-    expectType(exampleModule.getName).toBe<{
-      (): 'example-module';
-    }>();
+    expectType(exampleModule.getName).toBe<() => 'example-module'>();
     expectType(exampleModule.getName()).toBe<'example-module'>();
 
     // using type argument
     expectType<typeof exampleModule.getName>().toBe<() => 'example-module'>();
-    expectType<typeof exampleModule.getName>().toBe<{
-      (): 'example-module';
-    }>();
+    expectType<typeof exampleModule.getName>().toBe<() => 'example-module'>();
     expectType<
       ReturnType<typeof exampleModule.getName>
     >().toBe<'example-module'>();

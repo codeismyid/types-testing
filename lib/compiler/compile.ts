@@ -14,7 +14,7 @@ declare module 'typescript' {
 }
 
 /** @internal */
-export const compile = (options: CompileOptions) => {
+export function compile(options: CompileOptions) {
   const program = createProgram(options);
   const config = program.__internal;
   const checker = getTypeChecker(program);
@@ -96,7 +96,7 @@ export const compile = (options: CompileOptions) => {
   }
 
   return result;
-};
+}
 
 /** @internal */
 export type CompileResultError = {

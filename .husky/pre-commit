@@ -52,7 +52,7 @@ echo
 
 # Check lint
 printSubHeader "Check lint on staged files..."
-bun biome lint --fix --staged --no-errors-on-unmatched
+bunx biome lint --fix --staged --no-errors-on-unmatched
 printPassed "Lint"
 
 # Reindex staged files

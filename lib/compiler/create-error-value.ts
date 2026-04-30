@@ -2,7 +2,7 @@ import ts from 'typescript';
 import type { CompileResultError } from './compile';
 
 /** @internal */
-export const createErrorValue = (
+export function createErrorValue(
   sourceFile: ts.SourceFile,
   caller: ts.Node | ts.CallExpression | ts.MemberName,
   expectCallExpressionText?: string,
@@ -11,7 +11,7 @@ export const createErrorValue = (
   expectedType?: string,
   isNegated?: boolean,
   need2TypeArguments?: boolean
-): CompileResultError => {
+): CompileResultError {
   const position = sourceFile.getLineAndCharacterOfPosition(caller.getStart());
   const filePath = ts.sys.resolvePath(sourceFile.fileName);
   const line = position.line + 1;
@@ -28,4 +28,4 @@ export const createErrorValue = (
     isNegated,
     need2TypeArguments
   };
-};
+}

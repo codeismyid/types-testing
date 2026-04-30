@@ -12,7 +12,7 @@ const throwIfConfigError = (diagnostics?: readonly ts.Diagnostic[]) => {
 };
 
 /** @internal */
-export const createProgram = (options: CompileOptions) => {
+export function createProgram(options: CompileOptions) {
   const { basePath, tsConfig, compilerOptions, files, projectReferences } =
     options;
 
@@ -95,7 +95,7 @@ export const createProgram = (options: CompileOptions) => {
     'define basePath and tsConfig to implement configuration from tsconfig file\n' +
       'or define compilerOptions and files to implement configuration without tsconfig file.'
   );
-};
+}
 
 /** @internal */
 export type Program = ts.Program & {

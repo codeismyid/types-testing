@@ -3,7 +3,7 @@ import { AssertionState } from 'src/definitions/__internal/assertions';
 import ts from 'typescript';
 
 /** @internal */
-export const getTypeChecker = (program: ts.Program) => {
+export function getTypeChecker(program: ts.Program) {
   const __cache = new WeakMap<WeakKey, unknown>();
   const checker = program.getTypeChecker() as TypeChecker;
 
@@ -168,7 +168,7 @@ export const getTypeChecker = (program: ts.Program) => {
   };
 
   return checker;
-};
+}
 
 /** @internal */
 export type TypeChecker = ts.TypeChecker & {

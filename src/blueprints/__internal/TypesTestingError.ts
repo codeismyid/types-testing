@@ -11,15 +11,15 @@ export class TypesTestingError extends Error {
 
   constructor(
     errors: Compiler.CompileResult['errors'],
-    afterErrorFound: AfterErrorFound
+    onErrorFound: OnErrorFound
   ) {
     super();
-    this.#findError(errors, afterErrorFound);
+    this.#findError(errors, onErrorFound);
   }
 
   #findError = (
     errors: Compiler.CompileResult['errors'],
-    afterErrorFound: AfterErrorFound
+    onErrorFound: OnErrorFound
   ) => {
     const trace = {} as {
       originalLine: number;
@@ -40,7 +40,7 @@ export class TypesTestingError extends Error {
         this.name = 'TypesTestingError';
         this.#prepareMessage(errorFound);
         this.#prepareStack(errorFound);
-        afterErrorFound(key, this);
+        onErrorFound(key);
         return;
       }
     }
@@ -114,10 +114,11 @@ export class TypesTestingError extends Error {
         const prev = stacks[index - 1];
 
         if (prev) {
-          return (
-            stack.getFileName() === errorFound.filePath ||
-            stack.getScriptNameOrSourceURL() === errorFound.filePath
-          );
+          const path = stack.getFileName() ?? stack.getScriptNameOrSourceURL();
+
+          if (path) {
+            return ts.sys.resolvePath(path) === errorFound.filePath;
+          }
         }
 
         return false;
@@ -138,7 +139,4 @@ export class TypesTestingError extends Error {
 }
 
 /** @internal */
-export type AfterErrorFound = (
-  errorKey: string,
-  TypesTestingError: TypesTestingError
-) => void;
+export type OnErrorFound = (errorKey: string) => void;

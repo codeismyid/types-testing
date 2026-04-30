@@ -9,18 +9,26 @@ import {
 } from 'bun:test';
 import type { Compiler } from 'lib';
 import * as Lib from 'lib';
-import { TypesTesting } from 'src/blueprints/TypesTesting';
 import * as __Internal from 'src/blueprints/__internal/TypesTestingError';
+import { TypesTesting } from 'src/blueprints/TypesTesting';
 
 const { TypesTestingError: OriginalTypesTestingError } = __Internal;
 const { Compiler: OriginalCompiler, Assertion: OriginalAssertion } = Lib;
 
 describe('src > blueprints > TypesTesting', () => {
+  let error: __Internal.TypesTestingError;
   let compileMock: jest.Mock<Compiler.Compile>;
   let assertionMock: typeof OriginalAssertion;
   let TypesTestingErrorMock: jest.SpiedClass<typeof OriginalTypesTestingError>;
 
   beforeEach(() => {
+    error = {
+      name: '',
+      message: '',
+      stack: '',
+      errors: new Map<string, Compiler.CompileResultError>()
+    } as unknown as __Internal.TypesTestingError;
+
     compileMock = jest.fn(() => ({
       files: ['test.ts'],
       options: {},
@@ -31,12 +39,17 @@ describe('src > blueprints > TypesTesting', () => {
       toBe: jest.fn()
     } as unknown as typeof assertionMock;
 
-    TypesTestingErrorMock = jest.fn().mockImplementation(() => ({
-      name: '',
-      message: '',
-      stack: '',
-      errors: new Map<string, Compiler.CompileResultError>()
-    }));
+    TypesTestingErrorMock = jest
+      .fn()
+      .mockImplementation(
+        (
+          _: Map<string, Compiler.CompileResultError>,
+          onErrorFound: __Internal.OnErrorFound
+        ) => {
+          onErrorFound('');
+          return error;
+        }
+      );
 
     mock.module('lib', () => ({
       Compiler: {
@@ -131,29 +144,15 @@ describe('src > blueprints > TypesTesting', () => {
       );
     });
 
-    it('should throw TypesTestingError if afterErrorFound is called', () => {
+    it('should throw if error.name exists', () => {
       const test = new TypesTesting({});
       test.prepare();
 
-      TypesTestingErrorMock.mockImplementationOnce((_, afterErrorFound) => {
-        const _this = {} as __Internal.TypesTestingError;
-        afterErrorFound('', _this);
-        return _this;
-      });
+      const { toBe } = test.expectType();
 
+      error.name = 'TypesTestingError';
       expect(() => test.expectType<'error on expect call'>()).toThrow();
-
-      TypesTestingErrorMock.mockImplementationOnce(
-        jest.fn()
-      ).mockImplementationOnce((_, afterErrorFound) => {
-        const _this = {} as __Internal.TypesTestingError;
-        afterErrorFound('', _this);
-        return _this;
-      });
-
-      expect(() =>
-        test.expectType<''>().toBe<'error on assertionCall'>()
-      ).toThrow();
+      expect(() => toBe<'error on assertionCall'>()).toThrow();
     });
 
     it('should return assertion methods when no error', () => {

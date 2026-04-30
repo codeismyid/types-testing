@@ -24,10 +24,7 @@ if (process.versions.bun) {
         meta: Record<string, unknown>;
       }[];
     }[];
-  } =
-    await Bun.$`node --experimental-vm-modules node_modules/jest/bin/jest.js jest.test.ts -c=__tests__/__integrations/jest.config.ts --json`
-      .nothrow()
-      .json();
+  } = await Bun.$`bun test:integrations:jest --json`.nothrow().json();
 
   describe('jest', () => {
     test('successfully run in jest', () => {

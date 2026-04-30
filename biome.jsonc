@@ -15,7 +15,11 @@
   },
   "linter": {
     "enabled": true,
-    "includes": ["**", "!!**/__example", "!!**/__integrations"],
+    "includes": [
+      "**",
+      "!!__tests__/__example/**",
+      "!!__tests__/__integrations/**"
+    ],
     "rules": {
       "recommended": true
     }

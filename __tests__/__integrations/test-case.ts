@@ -25,16 +25,13 @@ const prepareThrowMessage = (fnName: string) => {
   };
 };
 
-export const testCase = (
+export const testCase = <T extends import('@jest/expect').JestExpect>(
   describe: (label: string, fn: () => void) => void,
   test:
     | import('vitest').TestAPI
-    | import('bun:test').Test
+    | import('bun:test').Test<unknown[]>
     | import('@jest/types').Global.ItConcurrent,
-  expect:
-    | import('vitest').ExpectStatic
-    | import('bun:test').Expect
-    | import('@jest/expect').JestExpect
+  expect: T
 ) => {
   describe('toBeAny', () => {
     const throwMessage = prepareThrowMessage('toBeAny');

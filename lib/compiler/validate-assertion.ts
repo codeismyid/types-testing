@@ -10,10 +10,10 @@ export type ValidateAssertionParams = {
 };
 
 /** @internal */
-export const validateAssertion = (
+export function validateAssertion(
   assertionFn: AssertionFn,
   params: ValidateAssertionParams
-) => {
+) {
   const result = assertionFn(
     params.checker,
     params.receivedType,
@@ -21,4 +21,4 @@ export const validateAssertion = (
   );
 
   return params.isNegated ? !result : result;
-};
+}

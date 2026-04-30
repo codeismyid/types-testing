@@ -55,18 +55,15 @@ type Asserts<Name, State, Received = NotProvided, Expected = NotProvided> = {
   };
 };
 
-type AssertionFn<
-  AssertionName,
-  Negated,
-  Received = NotProvided
-> = AssertionName extends Exclude<keyof PublicAssertions<Received>, 'not'>
-  ? (
-      AssertionName extends AssertionNeedTypeArgument
-        ? <Expected = NotProvided>(
-            expected?: Expected
-          ) => Asserts<AssertionName, Negated, Received, Expected>
-        : () => Asserts<AssertionName, Negated, Received, NotProvided>
-    ) extends infer Fn extends CallableFunction
-    ? Fn
-    : never
-  : never;
+type AssertionFn<AssertionName, Negated, Received = NotProvided> =
+  AssertionName extends Exclude<keyof PublicAssertions<Received>, 'not'>
+    ? (
+        AssertionName extends AssertionNeedTypeArgument
+          ? <Expected = NotProvided>(
+              expected?: Expected
+            ) => Asserts<AssertionName, Negated, Received, Expected>
+          : () => Asserts<AssertionName, Negated, Received, NotProvided>
+      ) extends infer Fn extends CallableFunction
+      ? Fn
+      : never
+    : never;

@@ -1,4 +1,4 @@
-import { type JestConfigWithTsJest, createJsWithTsEsmPreset } from 'ts-jest';
+import { createJsWithTsEsmPreset, type JestConfigWithTsJest } from 'ts-jest';
 
 const presetConfig = createJsWithTsEsmPreset({
   tsconfig: '__tests__/__example/tsconfig.jest.json'

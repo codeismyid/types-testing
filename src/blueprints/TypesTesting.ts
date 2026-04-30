@@ -33,19 +33,20 @@ export class TypesTesting {
 
     this.#assertions = new Proxy(Assertion, {
       get: () => {
-        const assertionFn = () => {
+        return () => {
           if (!this.#compileResult) {
             return;
           }
 
           const errors = this.#compileResult.errors;
-          new TypesTestingError(errors, (key, TypesTestingError) => {
-            errors.delete(key);
-            throw TypesTestingError;
+          const err = new TypesTestingError(errors, (errorKey) => {
+            errors.delete(errorKey);
           });
-        };
 
-        return assertionFn;
+          if (err.name) {
+            throw err;
+          }
+        };
       }
     }) as unknown as Assertions;
   }
@@ -112,6 +113,7 @@ export class TypesTesting {
    */
   expectType<Received = NotProvided>(
     // @ts-expect-error: intended (only the value type will be used)
+    // biome-ignore lint/correctness/noUnusedFunctionParameters: intended (only the value type will be used)
     received?: Received
   ) {
     const notPrepared = !this.isPrepared;
@@ -127,10 +129,13 @@ export class TypesTesting {
     }
 
     const errors = (this.#compileResult as Compiler.CompileResult).errors;
-    new TypesTestingError(errors, (key, TypesTestingError) => {
+    const err = new TypesTestingError(errors, (key) => {
       errors.delete(key);
-      throw TypesTestingError;
     });
+
+    if (err.name) {
+      throw err;
+    }
 
     return {
       ...this.#assertions,
