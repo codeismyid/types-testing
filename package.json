@@ -86,7 +86,7 @@
     "ts-jest": "29.4.9",
     "ts-node": "10.9.2",
     "tsc-alias": "1.8.16",
-    "tsc-output-format": "1.1.1",
+    "tsc-output-format": "1.2.0",
     "type-coverage": "2.29.7",
     "typescript": "6.0.3",
     "vitest": "4.1.5"
